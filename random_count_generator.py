@@ -16,8 +16,6 @@ class Writer(threading.Thread, Observer):
         super(Writer,self).__init__()
         self.fname = fname
         self.pqueue = PQueue(MAX_PQUEUE, PRODUCERS) 
-        #keep a count of items in pqueue.
-        self.n = 0
         #keep track of last item timestamp added to pqueue.
         self.last_time = time.time()
         self._stop_event = threading.Event()
@@ -45,6 +43,7 @@ class Writer(threading.Thread, Observer):
                     #used to debug threads
                     #self.write_file.write(str(item['number'])  +  ' ' + str(item['timestamp'])+ ' ' + str(item['thread id'])+'\n')
                     self.write_file.write(str(item['number']) + ' ' + str(item['timestamp'])+'\n') 
+                    self.write_file.flush()
 
     def stop(self):
         self._stop_event.set()
