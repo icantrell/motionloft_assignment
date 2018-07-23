@@ -128,25 +128,6 @@ class PQueue(PriorityQueue):
             item = self.queue[0]
             return item
     
-    def get_queue(self, block = True, timeout = None):
-        with self.not_empty:
-            if not block:
-                if not self._qsize():
-                    raise Empty
-            elif timeout is None:
-                while not self._qsize():
-                    self.not_empty.wait()
-            elif timeout < 0:
-                raise ValueError("'timeout' must be a non-negative number")
-            else:
-                endtime = time() + timeout
-                while not self._qsize():
-                    remaining = endtime - time()
-                    if remaining <= 0.0:
-                        raise Empty
-                    self.not_empty.wait(remaining)
-            item = self.queue
-            return item
 
     def put(self, item, block=True, timeout=None):
         '''Put an item into the queue.
